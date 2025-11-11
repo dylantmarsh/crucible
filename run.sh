@@ -7,7 +7,7 @@ print_logo() {
    / ____/______  _______(_) /_  / /__   
   / /   / ___/ / / / ___/ / __ \/ / _ \  
  / /___/ /  / /_/ / /__/ / /_/ / /  __/  Arch Linux System Crafting Tool
- \____/_/   \__,_/\___/_/_.___/_/\___/   by: typecraft
+  \____/_/   \__,_/\___/_/_.___/_/\___/   by: typecraft (forked by dylantmarsh)
 
 EOF
 }
@@ -49,26 +49,26 @@ fi
 echo "Updating system..."
 sudo pacman -Syu --noconfirm
 
-# Install yay AUR helper if not present
-if ! command -v yay &> /dev/null; then
-  echo "Installing yay AUR helper..."
+# Install paru AUR helper if not present
+if ! command -v paru &> /dev/null; then
+  echo "Installing paru AUR helper..."
   sudo pacman -S --needed git base-devel --noconfirm
-  if [[ ! -d "yay" ]]; then
-    echo "Cloning yay repository..."
+  if [[ ! -d "paru" ]]; then
+    echo "Cloning paru repository..."
   else
-    echo "yay directory already exists, removing it..."
-    rm -rf yay
+    echo "paru directory already exists, removing it..."
+    rm -rf paru
   fi
 
-  git clone https://aur.archlinux.org/yay.git
+  git clone https://aur.archlinux.org/paru.git
 
-  cd yay
-  echo "building yay.... yaaaaayyyyy"
+  cd paru
+  echo "building paru..."
   makepkg -si --noconfirm
   cd ..
-  rm -rf yay
+  rm -rf paru
 else
-  echo "yay is already installed"
+  echo "paru is already installed"
 fi
 
 # Install packages by category
@@ -113,16 +113,8 @@ else
     fi
   done
   
-  # Install gnome specific things to make it like a tiling WM
-  echo "Installing Gnome extensions..."
-  . gnome/gnome-extensions.sh
-  echo "Setting Gnome hotkeys..."
-  . gnome/gnome-hotkeys.sh
-  echo "Configuring Gnome..."
-  . gnome/gnome-settings.sh
-  
-  # Some programs just run better as flatpaks. Like discord/spotify
-  echo "Installing flatpaks (like discord and spotify)"
+  # Some programs just run better as flatpaks. Like spotify
+  echo "Installing flatpaks"
   . install-flatpaks.sh
 fi
 
